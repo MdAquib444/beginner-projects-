@@ -3,14 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doggy View 🐶</title>
+  <title>Doggy Explorer 🐶</title>
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-  <h1>🐶 Random Dog Viewer</h1>
-  <img id="dogImage" src="" alt="Random Dog" />
-  <br />
-  <button onclick="fetchDog()">New Dog</button>
+  <header>
+    <h1>🐾 Doggy Explorer</h1>
+    <button onclick="loadRandomDog()">🎲 Random Dog</button>
+  </header>
+
+  <section class="controls">
+    <select id="breedSelect">
+      <option value="">-- Select Breed --</option>
+    </select>
+    <select id="subBreedSelect" style="display:none;">
+      <option value="">-- Select Sub-breed --</option>
+    </select>
+    <button onclick="loadBreedImages()">🔍 Show Images</button>
+  </section>
+
+  <main id="imageContainer">
+    <!-- Dog images will appear here -->
+  </main>
 
   <script src="main.js"></script>
 </body>
