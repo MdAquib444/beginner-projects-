@@ -1,16 +1,25 @@
-const lat = 28.61; // Delhi
-const lon = 77.23;
+navigator.geolocation.getCurrentPosition(success, error);
 
-fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
-  .then(res => res.json())
-  .then(data => {
-    const weather = data.current_weather;
-    const text = `🌡️ Temp: ${weather.temperature}°C  
-💨 Wind: ${weather.windspeed} km/h  
-🕐 Time: ${weather.time}`;
-    document.getElementById('weather').textContent = text;
-  })
-  .catch(err => {
-    document.getElementById('weather').textContent = "Error fetching weather.";
-    console.error(err);
-  });
+function success(pos) {
+  const lat = pos.coords.latitude;
+  const lon = pos.coords.longitude;
+
+  fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
+    .then(res => res.json())
+    .then(data => {
+      const w = data.current_weather;
+      const text = `🌡️ Temp: ${w.temperature}°C  
+💨 Wind: ${w.windspeed} km/h  
+🕐 Time: ${w.time}`;
+      document.getElementById('weather').textContent = text;
+    })
+    .catch(err => {
+      document.getElementById('weather').textContent = "❌ Error fetching weather.";
+      console.error(err);
+    });
+}
+
+function error(err) {
+  document.getElementById('weather').textContent = "❌ Please allow location access.";
+  console.error(err);
+}
