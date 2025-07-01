@@ -8,17 +8,19 @@
 </head>
 <body>
   <header>
-    <h1>Dog Gallery</h1>
+    <div class="header-content">
+      <h1>Dog Gallery</h1>
+      <input type="text" id="searchInput" placeholder="Search breed..." />
+    </div>
     <div id="breedList" class="scroll-tags"></div>
   </header>
 
   <main id="imageContainer"></main>
 
   <footer>
-    <input type="text" id="searchInput" placeholder="Search breed..." />
+    <p>Powered by <a href="https://dog.ceo/dog-api/" target="_blank">Dog CEO API</a></p>
   </footer>
 
-  <!-- Image Overlay -->
   <div id="imageOverlay" class="hidden">
     <div id="overlayContent">
       <span id="closeBtn">✖</span>
