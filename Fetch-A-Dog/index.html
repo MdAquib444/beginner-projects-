@@ -2,29 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dog Gallery</title>
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
   <header>
-    <div class="header-content">
-      <h1>Dog Gallery</h1>
-      <input type="text" id="searchInput" placeholder="Search breed..." />
-    </div>
-    <div id="breedList" class="scroll-tags"></div>
+    <h1>Dog Gallery</h1>
+    <input type="text" id="searchInput" placeholder="Search breed...">
   </header>
 
-  <main id="imageContainer"></main>
+  <div id="breedTags" class="scrolling-tags"></div>
+  <div id="gallery"></div>
 
-  <footer>
-    <p>Powered by <a href="https://dog.ceo/dog-api/" target="_blank">Dog CEO API</a></p>
-  </footer>
-
+  <!-- Overlay -->
   <div id="imageOverlay" class="hidden">
     <div id="overlayContent">
       <span id="closeBtn">✖</span>
-      <img id="overlayImage" src="" alt="Dog image" />
+      <img id="overlayImage" src="" alt="Dog image"/>
       <p id="imageURL"></p>
       <button id="downloadBtn">⬇️ Download</button>
     </div>
