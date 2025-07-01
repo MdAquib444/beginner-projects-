@@ -1,132 +1,137 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background: #f7f7f7;
-  color: #333;
+  background: #f3f3f3;
+  color: #222;
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
+  background: #20232a;
+  color: white;
   padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-h1 {
+header h1 {
   margin: 0;
+  font-size: 1.5rem;
 }
 
-#searchInput {
+#search {
   padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: 180px;
-  transition: box-shadow 0.2s ease-in-out;
-}
-
-#searchInput:focus {
+  border-radius: 4px;
+  border: none;
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 100, 255, 0.4);
+  width: 160px;
 }
 
-.scrolling-tags {
+.breed-tags {
   display: flex;
   overflow-x: auto;
-  padding: 0.5rem 1rem;
   gap: 0.5rem;
-  background: #fff;
-  box-shadow: inset 0 -1px 0 #eee;
+  padding: 1rem;
+  background: white;
+  border-bottom: 1px solid #ddd;
 }
 
-.scrolling-tags::-webkit-scrollbar {
-  height: 6px;
-}
-
-.scrolling-tags::-webkit-scrollbar-thumb {
-  background-color: #aaa;
-  border-radius: 5px;
-}
-
-.scrolling-tags button {
+.breed-tags button {
   background: #eee;
   border: none;
-  padding: 6px 12px;
+  padding: 0.5rem 1rem;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s;
+  transition: 0.3s;
 }
 
-.scrolling-tags button:hover {
+.breed-tags button:hover {
   background: #ccc;
 }
 
-#gallery {
+main#gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
   padding: 1rem;
 }
 
-#gallery img {
+main img {
   width: 100%;
-  height: auto;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-#gallery img:hover {
-  transform: scale(1.05);
+main img:hover {
+  transform: scale(1.02);
 }
 
-/* Overlay styles */
+/* Overlay */
 #imageOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.7);
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 1000;
 }
 
-.hidden {
-  display: none;
-}
-
-#overlayContent {
+.overlay-content {
   background: white;
   padding: 1rem;
   border-radius: 10px;
-  max-width: 90%;
-  max-height: 90%;
   text-align: center;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease;
 }
 
-#overlayImage {
-  max-width: 90vw;
-  max-height: 60vh;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  object-fit: contain;
+#overlayImg {
+  max-width: 300px;
+  border-radius: 10px;
 }
 
 #closeBtn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1.5rem;
-  color: white;
+  top: 5px;
+  right: 10px;
+  font-size: 20px;
   cursor: pointer;
+}
+
+#downloadBtn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #0077cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+#downloadBtn:hover {
+  background: #005fa3;
+}
+
+.hidden {
+  display: none !important;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #20232a;
+  color: white;
+  margin-top: auto;
+}
+
+@keyframes fadeIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
