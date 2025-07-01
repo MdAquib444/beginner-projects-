@@ -2,37 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Doggy Pinterest 🐶</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dog Gallery</title>
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
   <header>
-    <h1>🐾 Doggy Pinterest</h1>
-    <button onclick="loadRandomDogs()">🎲 Random Dogs</button>
+    <h1>Dog Gallery</h1>
+    <div id="breedList" class="scroll-tags"></div>
   </header>
 
-  <section id="breedTagsContainer">
-    <!-- Scrollable horizontal breed tags -->
-  </section>
-
-  <main id="imageContainer">
-    <!-- Pinterest-style image grid -->
-  </main>
+  <main id="imageContainer"></main>
 
   <footer>
     <input type="text" id="searchInput" placeholder="Search breed..." />
-    <button onclick="searchBreed()">🔍</button>
   </footer>
+
   <!-- Image Overlay -->
-<div id="imageOverlay" class="hidden">
-  <div id="overlayContent">
-    <span id="closeBtn">✖</span>
-    <img id="overlayImage" src="" alt="Dog image" />
-    <p id="imageURL"></p>
-    <button id="downloadBtn">⬇️ Download</button>
+  <div id="imageOverlay" class="hidden">
+    <div id="overlayContent">
+      <span id="closeBtn">✖</span>
+      <img id="overlayImage" src="" alt="Dog image" />
+      <p id="imageURL"></p>
+      <button id="downloadBtn">⬇️ Download</button>
+    </div>
   </div>
-</div>
+
   <script src="main.js"></script>
 </body>
 </html>
