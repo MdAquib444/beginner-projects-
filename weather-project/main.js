@@ -1,25 +1,26 @@
 navigator.geolocation.getCurrentPosition(success, error);
 
-function success(pos) {
-  const lat = pos.coords.latitude;
-  const lon = pos.coords.longitude;
+function success(position) {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
 
   fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
     .then(res => res.json())
     .then(data => {
       const w = data.current_weather;
-      const text = `🌡️ Temp: ${w.temperature}°C  
-💨 Wind: ${w.windspeed} km/h  
-🕐 Time: ${w.time}`;
-      document.getElementById('weather').textContent = text;
+      const html = `
+        🌡️ Temp: ${w.temperature}°C<br>
+        💨 Wind: ${w.windspeed} km/h<br>
+        🕒 Time: ${w.time}
+      `;
+      document.getElementById("weather").innerHTML = html;
     })
     .catch(err => {
-      document.getElementById('weather').textContent = "❌ Error fetching weather.";
       console.error(err);
+      document.getElementById("weather").textContent = "❌ Weather fetch failed.";
     });
 }
 
-function error(err) {
-  document.getElementById('weather').textContent = "❌ Please allow location access.";
-  console.error(err);
+function error() {
+  document.getElementById("weather").textContent = "❌ Please allow location access.";
 }
