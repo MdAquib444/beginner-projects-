@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Sound Analyzer</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #0e0e0e;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    canvas {
+      width: 100%;
+      max-width: 700px;
+      height: 200px;
+      background: #181818;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .info {
+      margin: 5px 0;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎤 Live Sound Analyzer</h2>
+  <canvas id="spectrum" width="600" height="200"></canvas>
+  <div class="info" id="pitch">Pitch: --</div>
+  <div class="info" id="frequency">Frequency: -- Hz</div>
+  <div class="info" id="db">Volume: -- dB</div>
+  <div class="info" id="status">Mic Access: Requesting...</div>  <script>
+    const spectrumCanvas = document.getElementById("spectrum");
+    const specCtx = spectrumCanvas.getContext("2d");
+    const status = document.getElementById("status");
+    const pitchEl = document.getElementById("pitch");
+    const freqEl = document.getElementById("frequency");
+    const dbEl = document.getElementById("db");
+
+    function autoCorrelate(buffer, sampleRate) {
+      const SIZE = buffer.length;
+      let rms = 0;
+      for (let i = 0; i < SIZE; i++) {
+        let val = buffer[i];
+        rms += val * val;
+      }
+      rms = Math.sqrt(rms / SIZE);
+      if (rms < 0.01) return -1; // silence
+
+      let r1 = 0, r2 = SIZE - 1, threshold = 0.2;
+      for (let i = 0; i < SIZE / 2; i++) {
+        if (Math.abs(buffer[i]) < threshold) {
+          r1 = i;
+          break;
+        }
+      }
+      for (let i = 1; i < SIZE / 2; i++) {
+        if (Math.abs(buffer[SIZE - i]) < threshold) {
+          r2 = SIZE - i;
+          break;
+        }
+      }
+      buffer = buffer.slice(r1, r2);
+      SIZE = buffer.length;
+
+      let c = new Array(SIZE).fill(0);
+      for (let i = 0; i < SIZE; i++) {
+        for (let j = 0; j < SIZE - i; j++) {
+          c[i] = c[i] + buffer[j] * buffer[j + i];
+        }
+      }
+      let d = 0;
+      while (c[d] > c[d + 1]) d++;
+      let maxval = -1, maxpos = -1;
+      for (let i = d; i < SIZE; i++) {
+        if (c[i] > maxval) {
+          maxval = c[i];
+          maxpos = i;
+        }
+      }
+      let T0 = maxpos;
+      return sampleRate / T0;
+    }
+
+    function noteFromPitch(freq) {
+      const noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+      const A4 = 440;
+      const noteNum = 12 * (Math.log(freq / A4) / Math.log(2));
+      const noteIndex = Math.round(noteNum) + 69;
+      const noteName = noteStrings[noteIndex % 12];
+      const octave = Math.floor(noteIndex / 12) - 1;
+      return `${noteName}${octave}`;
+    }
+
+    async function startAudio() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        status.textContent = "Mic Access: ✅ Granted";
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = audioCtx.createAnalyser();
+        const source = audioCtx.createMediaStreamSource(stream);
+        const processor = audioCtx.createScriptProcessor(2048, 1, 1);
+
+        analyser.fftSize = 1024;
+        const freqData = new Uint8Array(analyser.frequencyBinCount);
+        const floatData = new Float32Array(analyser.fftSize);
+
+        source.connect(analyser);
+        source.connect(processor);
+        processor.connect(audioCtx.destination);
+
+        processor.onaudioprocess = function (e) {
+          const input = e.inputBuffer.getChannelData(0);
+          let pitch = autoCorrelate(input, audioCtx.sampleRate);
+          pitch = pitch && pitch > 80 && pitch < 1000 ? pitch : null;
+          if (pitch) {
+            const note = noteFromPitch(pitch);
+            pitchEl.textContent = `Pitch: ${note}`;
+            freqEl.textContent = `Frequency: ${pitch.toFixed(2)} Hz`;
+          } else {
+            pitchEl.textContent = `Pitch: --`;
+            freqEl.textContent = `Frequency: -- Hz`;
+          }
+
+          let sumSquares = 0;
+          for (let i = 0; i < input.length; i++) {
+            sumSquares += input[i] * input[i];
+          }
+          const rms = Math.sqrt(sumSquares / input.length);
+          const db = 20 * Math.log10(rms);
+          dbEl.textContent = `Volume: ${db.toFixed(2)} dB`;
+        };
+
+        function draw() {
+          requestAnimationFrame(draw);
+          analyser.getByteFrequencyData(freqData);
+
+          specCtx.fillStyle = "#181818";
+          specCtx.fillRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
+          const barWidth = spectrumCanvas.width / freqData.length;
+
+          for (let i = 0; i < freqData.length; i++) {
+            const value = freqData[i];
+            const height = spectrumCanvas.height * (value / 255);
+            const y = spectrumCanvas.height - height;
+            specCtx.fillStyle = `hsl(${(i / freqData.length) * 360}, 100%, 50%)`;
+            specCtx.fillRect(i * barWidth, y, barWidth, height);
+          }
+        }
+
+        draw();
+      } catch (e) {
+        status.textContent = "Mic Access: ❌ Denied";
+        console.error(e);
+      }
+    }
+
+    window.onload = () => startAudio();
+  </script></body>
+</html>
