@@ -23,12 +23,12 @@ body {
   text-align: center;
 }
 
-.weather-box h2 {
+.container h2 {
   font-size: 24px;
   margin-bottom: 10px;
 }
 
-.weather-box p {
+.container p {
   font-size: 18px;
   margin: 6px 0;
 }
