@@ -1,78 +1,95 @@
-const gallery = document.getElementById("gallery");
-const breedList = document.getElementById("breedList");
-const search = document.getElementById("search");
-const imageOverlay = document.getElementById("imageOverlay");
-const overlayImg = document.getElementById("overlayImg");
-const downloadBtn = document.getElementById("downloadBtn");
-const closeBtn = document.getElementById("closeBtn");
+const gallery = document.getElementById('gallery');
+const breedTags = document.getElementById('breedTags');
+const search = document.getElementById('search');
+const overlay = document.getElementById('imageOverlay');
+const overlayImg = document.getElementById('overlayImg');
+const downloadBtn = document.getElementById('downloadBtn');
+const closeBtn = document.getElementById('closeBtn');
 
-let allBreeds = [];
+let breedList = [];
+let currentBreed = '';
+let loading = false;
 
-async function fetchBreeds() {
-  const res = await fetch("https://dog.ceo/api/breeds/list/all");
-  const data = await res.json();
-  allBreeds = Object.keys(data.message);
-  showBreedTags(allBreeds);
-}
+// Fetch breed list on load
+fetch('https://dog.ceo/api/breeds/list/all')
+  .then(res => res.json())
+  .then(data => {
+    breedList = Object.keys(data.message);
+    renderTags(breedList);
+    loadRandomImages();
+  });
 
-function showBreedTags(breeds) {
-  breedList.innerHTML = "";
-  breeds.forEach((breed) => {
-    const btn = document.createElement("button");
-    btn.textContent = breed;
-    btn.onclick = () => fetchImagesByBreed(breed);
-    breedList.appendChild(btn);
+// Render breed tags
+function renderTags(breeds) {
+  breedTags.innerHTML = '';
+  breeds.forEach(breed => {
+    const btn = document.createElement('button');
+    btn.innerText = breed;
+    btn.onclick = () => {
+      currentBreed = breed;
+      gallery.innerHTML = '';
+      loadBreedImages(breed);
+    };
+    breedTags.appendChild(btn);
   });
 }
 
-async function fetchImagesByBreed(breed) {
-  const res = await fetch(`https://dog.ceo/api/breed/${breed}/images`);
-  const data = await res.json();
-  renderImages(data.message.slice(0, 20)); // limit for UI
+// Load random dog images
+function loadRandomImages() {
+  loading = true;
+  fetch('https://dog.ceo/api/breeds/image/random/20')
+    .then(res => res.json())
+    .then(data => {
+      data.message.forEach(showImage);
+      loading = false;
+    });
 }
 
-async function fetchRandomImages() {
-  const res = await fetch("https://dog.ceo/api/breeds/image/random/20");
-  const data = await res.json();
-  renderImages(data.message);
+// Load breed-specific images
+function loadBreedImages(breed) {
+  loading = true;
+  fetch(`https://dog.ceo/api/breed/${breed}/images`)
+    .then(res => res.json())
+    .then(data => {
+      data.message.slice(0, 20).forEach(showImage);
+      loading = false;
+    });
 }
 
-function renderImages(images) {
-  gallery.innerHTML = "";
-  images.forEach((url) => {
-    const img = document.createElement("img");
-    img.src = url;
-    img.alt = "Dog";
-    img.onclick = () => openOverlay(url);
-    gallery.appendChild(img);
-  });
+// Show image on UI
+function showImage(url) {
+  const img = document.createElement('img');
+  img.src = url;
+  img.onclick = () => showOverlay(url);
+  gallery.appendChild(img);
 }
 
-function openOverlay(url) {
+// Show image overlay
+function showOverlay(url) {
   overlayImg.src = url;
   downloadBtn.href = url;
-  imageOverlay.classList.remove("hidden");
+  overlay.classList.remove('hidden');
 }
 
-function closeOverlay() {
-  imageOverlay.classList.add("hidden");
-}
+// Close overlay
+closeBtn.onclick = () => {
+  overlay.classList.add('hidden');
+};
 
-search.addEventListener("input", () => {
-  const term = search.value.toLowerCase();
-  const filtered = allBreeds.filter((b) => b.includes(term));
-  showBreedTags(filtered);
+// Filter breeds on search
+search.addEventListener('input', () => {
+  const value = search.value.toLowerCase();
+  const filtered = breedList.filter(b => b.includes(value));
+  renderTags(filtered);
 });
 
-closeBtn.addEventListener("click", closeOverlay);
-imageOverlay.addEventListener("click", (e) => {
-  if (e.target === imageOverlay) closeOverlay();
+// Infinite scroll
+window.addEventListener('scroll', () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
+    if (currentBreed) {
+      loadBreedImages(currentBreed);
+    } else {
+      loadRandomImages();
+    }
+  }
 });
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeOverlay();
-});
-
-// Init
-fetchBreeds();
-fetchRandomImages();
