@@ -23,7 +23,7 @@ function setWeatherBackground(code) {
     bg = 'https://source.unsplash.com/1600x900/?weather';
   }
 
-  document.body.style.backgroundImage = `url('${bg}')`;
+  document.getElementById('background').style.backgroundImage = `url('${bg}')`;
 }
 
 function fetchWeather(lat, lon) {
