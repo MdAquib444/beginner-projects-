@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const size = 40;
+const size = 5;
 
 let cubePos = {
   x: canvas.width / 2,
