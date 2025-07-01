@@ -4,19 +4,44 @@ function updateTime() {
   document.getElementById('time').textContent = `Time: ${timeStr}`;
 }
 
-function fetchWeather(lat, lon) {
-  const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+function setWeatherBackground(code) {
+  let bg = '';
 
-  fetch(apiURL)
+  if (code >= 0 && code <= 3) {
+    bg = 'https://source.unsplash.com/1600x900/?sunny';
+  } else if (code >= 45 && code <= 48) {
+    bg = 'https://source.unsplash.com/1600x900/?fog';
+  } else if (code >= 51 && code <= 67) {
+    bg = 'https://source.unsplash.com/1600x900/?drizzle';
+  } else if (code >= 80 && code <= 82) {
+    bg = 'https://source.unsplash.com/1600x900/?rain';
+  } else if (code >= 71 && code <= 77) {
+    bg = 'https://source.unsplash.com/1600x900/?snow';
+  } else if (code >= 95) {
+    bg = 'https://source.unsplash.com/1600x900/?storm';
+  } else {
+    bg = 'https://source.unsplash.com/1600x900/?weather';
+  }
+
+  document.body.style.backgroundImage = `url('${bg}')`;
+}
+
+function fetchWeather(lat, lon) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+
+  fetch(url)
     .then(res => res.json())
     .then(data => {
       const weather = data.current_weather;
+      const code = weather.weathercode;
       document.getElementById('temperature').textContent = `Temperature: ${weather.temperature} °C`;
-      document.getElementById('description').textContent = `Condition Code: ${weather.weathercode}`;
+      document.getElementById('condition').textContent = `Condition Code: ${code}`;
       document.getElementById('wind').textContent = `Wind: ${weather.windspeed} km/h`;
+
+      setWeatherBackground(code);
     })
     .catch(() => {
-      document.getElementById('location').textContent = "Failed to load weather data.";
+      document.getElementById('location').textContent = "❌ Weather data failed.";
     });
 }
 
@@ -25,13 +50,14 @@ function getLocation() {
     navigator.geolocation.getCurrentPosition(pos => {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
-      document.getElementById('location').textContent = `Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)}`;
+
+      document.getElementById('location').textContent = `Your Location`;
       fetchWeather(lat, lon);
     }, () => {
-      document.getElementById('location').textContent = "Permission denied for location.";
+      document.getElementById('location').textContent = "❌ Location permission denied.";
     });
   } else {
-    document.getElementById('location').textContent = "Geolocation not supported.";
+    document.getElementById('location').textContent = "❌ Geolocation not supported.";
   }
 }
 
