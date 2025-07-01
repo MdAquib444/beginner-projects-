@@ -10,8 +10,8 @@ function success(pos) {
       const w = data.current_weather;
       const html = `
 🌤️ Weather Code: ${w.weathercode}
-🌡️ Temp: ${w.temperature}°C
-💨 Wind: ${w.windspeed} km/h
+🌡️ Temperature: ${w.temperature}°C
+💨 Wind Speed: ${w.windspeed} km/h
 🕒 Time: ${w.time.replace("T", " ")}
       `;
       document.getElementById("weather").textContent = html;
