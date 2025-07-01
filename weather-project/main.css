@@ -1,3 +1,4 @@
+/* Reset and base styles */
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +10,7 @@ html, body {
   font-family: 'Segoe UI', sans-serif;
 }
 
+/* Full-screen background */
 body {
   background-image: url('https://source.unsplash.com/1920x1080/?sky,weather');
   background-size: cover;
@@ -18,6 +20,7 @@ body {
   justify-content: center;
 }
 
+/* Center container */
 .container {
   height: 100%;
   width: 100%;
@@ -26,6 +29,7 @@ body {
   justify-content: center;
 }
 
+/* Glassmorphism weather box */
 .weather-box {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
@@ -38,13 +42,16 @@ body {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
+/* Header */
 .weather-box h1 {
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
+/* Weather info text */
 .weather-box p {
   font-size: 1.2rem;
-  line-height: 1.5;
+  line-height: 2;
   font-weight: 500;
+  white-space: pre-line; /* allows multiline emoji+text */
 }
