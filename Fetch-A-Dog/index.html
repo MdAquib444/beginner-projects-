@@ -2,29 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doggy Explorer 🐶</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doggy Pinterest 🐶</title>
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
   <header>
-    <h1>🐾 Doggy Explorer</h1>
-    <button onclick="loadRandomDog()">🎲 Random Dog</button>
+    <h1>🐾 Doggy Pinterest</h1>
+    <button onclick="loadRandomDogs()">🎲 Random Dogs</button>
   </header>
 
-  <section class="controls">
-    <select id="breedSelect">
-      <option value="">-- Select Breed --</option>
-    </select>
-    <select id="subBreedSelect" style="display:none;">
-      <option value="">-- Select Sub-breed --</option>
-    </select>
-    <button onclick="loadBreedImages()">🔍 Show Images</button>
+  <section id="breedTagsContainer">
+    <!-- Scrollable horizontal breed tags -->
   </section>
 
   <main id="imageContainer">
-    <!-- Dog images will appear here -->
+    <!-- Pinterest-style image grid -->
   </main>
+
+  <footer>
+    <input type="text" id="searchInput" placeholder="Search breed..." />
+    <button onclick="searchBreed()">🔍</button>
+  </footer>
 
   <script src="main.js"></script>
 </body>
