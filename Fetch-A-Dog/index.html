@@ -24,7 +24,15 @@
     <input type="text" id="searchInput" placeholder="Search breed..." />
     <button onclick="searchBreed()">🔍</button>
   </footer>
-
+  <!-- Image Overlay -->
+<div id="imageOverlay" class="hidden">
+  <div id="overlayContent">
+    <span id="closeBtn">✖</span>
+    <img id="overlayImage" src="" alt="Dog image" />
+    <p id="imageURL"></p>
+    <button id="downloadBtn">⬇️ Download</button>
+  </div>
+</div>
   <script src="main.js"></script>
 </body>
 </html>
