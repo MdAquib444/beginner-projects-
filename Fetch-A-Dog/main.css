@@ -1,56 +1,75 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
-  background: #f8f8f8;
-  color: #333;
+  background: #f5f5f5;
 }
 
 header {
-  padding: 1rem;
   background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
   position: sticky;
   top: 0;
-  z-index: 100;
-  border-bottom: 1px solid #ddd;
+  z-index: 10;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+#searchInput {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 3px rgba(0,0,0,0.1);
 }
 
 .scroll-tags {
   display: flex;
   overflow-x: auto;
+  padding: 0.5rem 0;
   gap: 0.5rem;
-  margin-top: 1rem;
+  scrollbar-width: none;
+}
+
+.scroll-tags::-webkit-scrollbar {
+  display: none;
 }
 
 .scroll-tags button {
-  padding: 0.5rem 1rem;
   background: #eee;
   border: none;
+  padding: 0.5rem 1rem;
   border-radius: 20px;
   cursor: pointer;
-  white-space: nowrap;
+  transition: background 0.2s;
 }
 
 .scroll-tags button:hover {
   background: #ddd;
 }
 
-main#imageContainer {
-  padding: 1rem;
-  columns: 2 200px;
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1rem;
+  padding: 1rem;
 }
 
 main img {
   width: 100%;
-  margin-bottom: 1rem;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
 }
 
 main img:hover {
@@ -58,67 +77,44 @@ main img:hover {
 }
 
 footer {
-  padding: 1rem;
   text-align: center;
+  padding: 1rem;
+  color: #555;
   background: white;
-  border-top: 1px solid #ddd;
+  margin-top: auto;
 }
 
-footer input {
-  padding: 0.5rem 1rem;
-  width: 80%;
-  max-width: 400px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-}
-
-/* Overlay Styles */
 #imageOverlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.9);
+  inset: 0;
+  background: rgba(0,0,0,0.8);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 999;
 }
-#imageOverlay.hidden {
-  display: none;
-}
+
 #overlayContent {
-  background: #222;
-  padding: 20px;
-  border-radius: 12px;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
   text-align: center;
-  max-width: 90vw;
-  max-height: 90vh;
+  max-width: 90%;
+  max-height: 90%;
   overflow: auto;
 }
-#overlayImage {
+
+#overlayContent img {
   max-width: 100%;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-#imageURL {
-  color: #ccc;
-  word-break: break-all;
-  margin: 10px 0;
-}
-#downloadBtn {
-  padding: 8px 16px;
-  background-color: #28a;
-  color: white;
-  border: none;
   border-radius: 6px;
-  cursor: pointer;
 }
+
 #closeBtn {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 24px;
-  color: white;
+  float: right;
   cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.hidden {
+  display: none;
 }
