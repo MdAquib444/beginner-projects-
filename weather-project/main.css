@@ -1,80 +1,83 @@
-* {
+  * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
 }
 
 body {
   height: 100vh;
-  background-image: url('https://source.unsplash.com/1600x900/?weather,sky');
+  width: 100%;
+  background-image: url('https://source.unsplash.com/1920x1080/?weather,sky');
   background-size: cover;
   background-position: center;
-  font-family: 'Segoe UI', sans-serif;
   color: #fff;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-.weather-ui {
-  text-align: center;
-  background: rgba(0, 0, 0, 0.45);
+.container {
+  background-color: rgba(0, 0, 0, 0.5);
   padding: 2rem;
   border-radius: 20px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
   backdrop-filter: blur(8px);
-  max-width: 400px;
-  width: 90%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
-.location {
-  font-size: 1.6rem;
-  font-weight: bold;
+.top h1 {
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
 }
 
 .date {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #ccc;
-  margin-bottom: 1rem;
+}
+
+.center {
+  margin: 2rem 0;
 }
 
 .temperature {
   font-size: 3rem;
-  font-weight: 700;
-  margin-top: 0.5rem;
+  font-weight: bold;
 }
 
 .condition {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin-top: 0.3rem;
 }
 
 .realfeel {
-  font-size: 1rem;
   color: #ddd;
-  margin: 0.8rem 0;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
 }
 
-.info-cards {
+.cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   padding: 1rem;
   border-radius: 12px;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(4px);
 }
 
 .card p {
-  font-size: 0.85rem;
-  color: #ccc;
+  font-size: 0.9rem;
+  color: #ddd;
 }
 
 .card h3 {
   font-size: 1.2rem;
-  margin-top: 0.2rem;
-  color: #fff;
+  margin-top: 0.5rem;
 }
