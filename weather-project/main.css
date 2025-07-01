@@ -6,22 +6,75 @@
 
 body {
   height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Segoe UI', sans-serif;
-  color: white;
-  text-align: center;
+  background-image: url('https://source.unsplash.com/1600x900/?weather,sky');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  background-color: black;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-p, h1 {
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
-  margin: 8px 0;
-  font-size: 18px;
+.weather-ui {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  max-width: 400px;
+  width: 90%;
+}
+
+.location {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.date {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+.temperature {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+.condition {
+  font-size: 1.1rem;
+  margin-top: 0.3rem;
+}
+
+.realfeel {
+  font-size: 1rem;
+  color: #ddd;
+  margin: 0.8rem 0;
+}
+
+.info-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 12px;
+  backdrop-filter: blur(3px);
+}
+
+.card p {
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+  color: #fff;
 }
