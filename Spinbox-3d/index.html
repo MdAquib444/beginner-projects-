@@ -1,92 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Canvas Cube</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #000;
-      overflow: hidden;
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const cx = canvas.width / 2;
+const cy = canvas.height / 2;
+const size = 40;
+
+function rotateX(p, angle) {
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  const y = p.y * cos - p.z * sin;
+  const z = p.y * sin + p.z * cos;
+  return { x: p.x, y, z };
+}
+
+function rotateY(p, angle) {
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  const x = p.z * sin + p.x * cos;
+  const z = p.z * cos - p.x * sin;
+  return { x, y: p.y, z };
+}
+
+function project(p) {
+  const scale = 3;
+  return {
+    x: p.x * scale + cubePos.x,
+    y: p.y * scale + cubePos.y
+  };
+}
+
+const originalPoints = [
+  {x:-1,y:-1,z:-1}, {x:1,y:-1,z:-1},
+  {x:1,y:1,z:-1},  {x:-1,y:1,z:-1},
+  {x:-1,y:-1,z:1}, {x:1,y:-1,z:1},
+  {x:1,y:1,z:1},   {x:-1,y:1,z:1}
+].map(p => ({x: p.x * size, y: p.y * size, z: p.z * size}));
+
+const faces = [
+  [0,1,2,3], // back
+  [4,5,6,7], // front
+  [0,1,5,4], // bottom
+  [2,3,7,6], // top
+  [1,2,6,5], // right
+  [0,3,7,4]  // left
+];
+
+const faceColors = ["#0ff", "#0cc", "#088", "#0aa", "#066", "#044"];
+
+let angleX = 0;
+let angleY = 0;
+
+let cubePos = { x: canvas.width / 2, y: canvas.height / 2 };
+let velocity = { x: 2.5, y: 2.1 }; // speed per frame
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  angleX += 0.01;
+  angleY += 0.015;
+
+  // Move cube
+  cubePos.x += velocity.x;
+  cubePos.y += velocity.y;
+
+  // Collision detection with canvas edges
+  const margin = size * 3; // projected radius
+  if (cubePos.x + margin > canvas.width || cubePos.x - margin < 0) {
+    velocity.x *= -1;
+  }
+  if (cubePos.y + margin > canvas.height || cubePos.y - margin < 0) {
+    velocity.y *= -1;
+  }
+
+  const rotated = originalPoints.map(p => rotateY(rotateX(p, angleX), angleY));
+  const projected = rotated.map(project);
+
+  // Depth sort
+  const faceDepth = faces.map((face, i) => {
+    const zAvg = face.reduce((sum, idx) => sum + rotated[idx].z, 0) / 4;
+    return { index: i, z: zAvg };
+  }).sort((a, b) => b.z - a.z);
+
+  for (const { index } of faceDepth) {
+    const face = faces[index];
+    ctx.beginPath();
+    const p0 = projected[face[0]];
+    ctx.moveTo(p0.x, p0.y);
+    for (let i = 1; i < face.length; i++) {
+      const p = projected[face[i]];
+      ctx.lineTo(p.x, p.y);
     }
+    ctx.closePath();
+    ctx.fillStyle = faceColors[index];
+    ctx.fill();
+    ctx.strokeStyle = "#000";
+    ctx.stroke();
+  }
 
-    canvas {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <canvas id="canvas"></canvas>
+  requestAnimationFrame(draw);
+}
 
-  <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
-
-    // Size of cube
-    const size = 50;
-
-    // 3D to 2D projection (simple isometric projection)
-    function project(x, y, z) {
-      const scale = 0.5;
-      return {
-        x: cx + (x - z) * scale,
-        y: cy + (y - z) * scale * 0.5
-      };
-    }
-
-    // Define cube corners
-    const points3D = [
-      {x: 0, y: 0, z: 0},
-      {x: size, y: 0, z: 0},
-      {x: size, y: size, z: 0},
-      {x: 0, y: size, z: 0},
-      {x: 0, y: 0, z: size},
-      {x: size, y: 0, z: size},
-      {x: size, y: size, z: size},
-      {x: 0, y: size, z: size}
-    ];
-
-    const faces = [
-      [0, 1, 2, 3], // front
-      [4, 5, 6, 7], // back
-      [0, 1, 5, 4], // top
-      [2, 3, 7, 6], // bottom
-      [1, 2, 6, 5], // right
-      [0, 3, 7, 4]  // left
-    ];
-
-    const faceColors = [
-      "#00ffff", "#009999", "#00aaaa", "#007777", "#005555", "#003333"
-    ];
-
-    function drawFace(indices, color) {
-      ctx.beginPath();
-      const start = project(points3D[indices[0]].x, points3D[indices[0]].y, points3D[indices[0]].z);
-      ctx.moveTo(start.x, start.y);
-      for (let i = 1; i < indices.length; i++) {
-        const p = points3D[indices[i]];
-        const proj = project(p.x, p.y, p.z);
-        ctx.lineTo(proj.x, proj.y);
-      }
-      ctx.closePath();
-      ctx.fillStyle = color;
-      ctx.fill();
-      ctx.strokeStyle = "#000";
-      ctx.stroke();
-    }
-
-    // Clear and draw cube
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = faces.length - 1; i >= 0; i--) {
-      drawFace(faces[i], faceColors[i]);
-    }
-  </script>
-</body>
-</html>
+draw();
+</script>
