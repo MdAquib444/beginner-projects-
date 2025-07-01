@@ -13,13 +13,13 @@ function success(pos) {
         💨 <strong>Wind:</strong> ${w.windspeed} km/h<br>
         🕒 <strong>Time:</strong> ${w.time.replace("T", " ")}
       `;
-      document.getElementById('weather').innerHTML = html;
+      document.getElementById("weather").innerHTML = html;
     })
     .catch(() => {
-      document.getElementById('weather').textContent = "❌ Weather data not available.";
+      document.getElementById("weather").textContent = "❌ Weather data not available.";
     });
 }
 
 function error() {
-  document.getElementById('weather').textContent = "❌ Location permission denied.";
+  document.getElementById("weather").textContent = "❌ Location permission denied.";
 }
