@@ -4,41 +4,47 @@
   box-sizing: border-box;
 }
 
-body, html {
+html, body {
   height: 100%;
   font-family: 'Segoe UI', sans-serif;
 }
 
-.overlay {
-  background-image: url('https://source.unsplash.com/1920x1080/?weather,sky');
+body {
+  background-image: url('https://source.unsplash.com/1920x1080/?sky,weather');
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  height: 100%;
   width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
-.card {
+.weather-box {
   background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  color: white;
+  padding: 2rem 2.5rem;
   border-radius: 20px;
-  padding: 2rem;
+  text-align: center;
   max-width: 90%;
   width: 350px;
-  color: white;
-  text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
-h1 {
+.weather-box h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
 
-#weather {
+.weather-box p {
   font-size: 1.2rem;
+  line-height: 1.5;
   font-weight: 500;
-  line-height: 1.6;
 }
