@@ -55,19 +55,19 @@ const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
 const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
 const program = createProgram(gl, vs, fs);
 
-// Cube vertices
+// Cube vertices (corrected: 8 vertices needed, not 12)
 const positions = new Float32Array([
-  -1, -1,  1,  1, -1,  1, -1,  1,  1,  1,  1,  1, // front
-  -1, -1, -1,  1, -1, -1, -1,  1, -1,  1,  1, -1  // back
+  -1, -1,  1,   1, -1,  1,   1,  1,  1,  -1,  1,  1, // front face
+  -1, -1, -1,   1, -1, -1,   1,  1, -1,  -1,  1, -1  // back face
 ]);
 
 const indices = new Uint16Array([
-  0, 1, 2, 2, 1, 3, // front
-  5, 4, 7, 7, 4, 6, // back
-  2, 3, 6, 6, 3, 7, // top
-  0, 1, 4, 4, 1, 5, // bottom
-  0, 2, 4, 4, 2, 6, // left
-  1, 3, 5, 5, 3, 7  // right
+  0, 1, 2, 0, 2, 3, // front
+  4, 5, 6, 4, 6, 7, // back
+  3, 2, 6, 3, 6, 7, // top
+  0, 1, 5, 0, 5, 4, // bottom
+  0, 3, 7, 0, 7, 4, // left
+  1, 2, 6, 1, 6, 5  // right
 ]);
 
 const posBuffer = gl.createBuffer();
