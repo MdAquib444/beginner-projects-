@@ -13,17 +13,17 @@ function setWeatherBackground(code) {
     bg = 'https://source.unsplash.com/1600x900/?fog';
   } else if (code >= 51 && code <= 67) {
     bg = 'https://source.unsplash.com/1600x900/?drizzle';
-  } else if (code >= 80 && code <= 82) {
-    bg = 'https://source.unsplash.com/1600x900/?rain';
   } else if (code >= 71 && code <= 77) {
     bg = 'https://source.unsplash.com/1600x900/?snow';
+  } else if (code >= 80 && code <= 82) {
+    bg = 'https://source.unsplash.com/1600x900/?rain';
   } else if (code >= 95) {
     bg = 'https://source.unsplash.com/1600x900/?storm';
   } else {
     bg = 'https://source.unsplash.com/1600x900/?weather';
   }
 
-  document.getElementById('background').style.backgroundImage = `url('${bg}')`;
+  document.body.style.backgroundImage = `url('${bg}')`;
 }
 
 function fetchWeather(lat, lon) {
@@ -35,13 +35,13 @@ function fetchWeather(lat, lon) {
       const weather = data.current_weather;
       const code = weather.weathercode;
       document.getElementById('temperature').textContent = `Temperature: ${weather.temperature} °C`;
-      document.getElementById('condition').textContent = `Condition Code: ${code}`;
+      document.getElementById('condition').textContent = `Weather Code: ${code}`;
       document.getElementById('wind').textContent = `Wind: ${weather.windspeed} km/h`;
 
       setWeatherBackground(code);
     })
     .catch(() => {
-      document.getElementById('location').textContent = "❌ Weather data failed.";
+      document.getElementById('location').textContent = "❌ Failed to fetch weather.";
     });
 }
 
@@ -50,11 +50,10 @@ function getLocation() {
     navigator.geolocation.getCurrentPosition(pos => {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
-
       document.getElementById('location').textContent = `Your Location`;
       fetchWeather(lat, lon);
     }, () => {
-      document.getElementById('location').textContent = "❌ Location permission denied.";
+      document.getElementById('location').textContent = "❌ Location denied.";
     });
   } else {
     document.getElementById('location').textContent = "❌ Geolocation not supported.";
