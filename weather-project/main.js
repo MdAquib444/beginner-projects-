@@ -9,11 +9,12 @@ function success(pos) {
     .then(data => {
       const w = data.current_weather;
       const html = `
-        🌡️ <strong>Temp:</strong> ${w.temperature}°C<br>
-        💨 <strong>Wind:</strong> ${w.windspeed} km/h<br>
-        🕒 <strong>Time:</strong> ${w.time.replace("T", " ")}
+🌤️ Weather Code: ${w.weathercode}
+🌡️ Temp: ${w.temperature}°C
+💨 Wind: ${w.windspeed} km/h
+🕒 Time: ${w.time.replace("T", " ")}
       `;
-      document.getElementById("weather").innerHTML = html;
+      document.getElementById("weather").textContent = html;
     })
     .catch(() => {
       document.getElementById("weather").textContent = "❌ Weather data not available.";
