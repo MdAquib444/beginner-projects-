@@ -3,27 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Weather UI</title>
+  <title>Weather App</title>
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-  <main class="weather-ui">
-    <div class="location">Lerua, Bihar</div>
-    <div class="date">Tuesday, July 2</div>
-    <div class="temperature">32°C</div>
-    <div class="condition">Mostly Cloudy</div>
-    <div class="realfeel">RealFeel® 36° / 25°</div>
-
-    <section class="info-cards">
-      <div class="card"><p>Humidity</p><h3>65%</h3></div>
-      <div class="card"><p>Precipitation</p><h3>0%</h3></div>
-      <div class="card"><p>Wind</p><h3>12 km/h</h3></div>
-      <div class="card"><p>AQI</p><h3>45</h3></div>
-      <div class="card"><p>UV Index</p><h3>7</h3></div>
-      <div class="card"><p>Pressure</p><h3>1012 mb</h3></div>
-    </section>
-  </main>
-
+  <div class="container">
+    <div class="top">
+      <h1 class="location">Loading...</h1>
+      <p class="date">Loading date...</p>
+    </div>
+    <div class="center">
+      <h2 class="temperature">--°C</h2>
+      <p class="condition">--</p>
+      <p class="realfeel">--</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <p>Humidity</p>
+        <h3>--</h3>
+      </div>
+      <div class="card">
+        <p>Precipitation</p>
+        <h3>--</h3>
+      </div>
+      <div class="card">
+        <p>Wind</p>
+        <h3>--</h3>
+      </div>
+      <div class="card">
+        <p>AQI</p>
+        <h3>--</h3>
+      </div>
+      <div class="card">
+        <p>UV Index</p>
+        <h3>--</h3>
+      </div>
+      <div class="card">
+        <p>Pressure</p>
+        <h3>--</h3>
+      </div>
+    </div>
+  </div>
   <script src="main.js"></script>
 </body>
 </html>
