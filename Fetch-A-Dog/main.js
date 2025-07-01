@@ -1,83 +1,78 @@
 const gallery = document.getElementById("gallery");
-const breedTags = document.getElementById("breedTags");
-const searchInput = document.getElementById("searchInput");
-
+const breedList = document.getElementById("breedList");
+const search = document.getElementById("search");
 const imageOverlay = document.getElementById("imageOverlay");
-const overlayImage = document.getElementById("overlayImage");
-const imageURL = document.getElementById("imageURL");
+const overlayImg = document.getElementById("overlayImg");
 const downloadBtn = document.getElementById("downloadBtn");
 const closeBtn = document.getElementById("closeBtn");
 
-// Fetch all breeds
-async function loadBreeds() {
+let allBreeds = [];
+
+async function fetchBreeds() {
   const res = await fetch("https://dog.ceo/api/breeds/list/all");
   const data = await res.json();
-  const breeds = Object.keys(data.message);
-  breeds.forEach(breed => {
+  allBreeds = Object.keys(data.message);
+  showBreedTags(allBreeds);
+}
+
+function showBreedTags(breeds) {
+  breedList.innerHTML = "";
+  breeds.forEach((breed) => {
     const btn = document.createElement("button");
     btn.textContent = breed;
-    btn.onclick = () => loadBreedImages(breed);
-    breedTags.appendChild(btn);
+    btn.onclick = () => fetchImagesByBreed(breed);
+    breedList.appendChild(btn);
   });
 }
 
-// Load random images (mix)
-async function loadRandomImages() {
-  const res = await fetch("https://dog.ceo/api/breeds/image/random/20");
-  const data = await res.json();
-  showImages(data.message);
-}
-
-// Load images for a specific breed
-async function loadBreedImages(breed) {
+async function fetchImagesByBreed(breed) {
   const res = await fetch(`https://dog.ceo/api/breed/${breed}/images`);
   const data = await res.json();
-  showImages(data.message.slice(0, 20));
+  renderImages(data.message.slice(0, 20)); // limit for UI
 }
 
-// Show images in gallery
-function showImages(images) {
+async function fetchRandomImages() {
+  const res = await fetch("https://dog.ceo/api/breeds/image/random/20");
+  const data = await res.json();
+  renderImages(data.message);
+}
+
+function renderImages(images) {
   gallery.innerHTML = "";
-  images.forEach(url => {
+  images.forEach((url) => {
     const img = document.createElement("img");
     img.src = url;
     img.alt = "Dog";
-    img.onclick = () => showOverlay(url);
+    img.onclick = () => openOverlay(url);
     gallery.appendChild(img);
   });
 }
 
-// Show overlay with image and download
-function showOverlay(url) {
+function openOverlay(url) {
+  overlayImg.src = url;
+  downloadBtn.href = url;
   imageOverlay.classList.remove("hidden");
-  overlayImage.src = url;
-  imageURL.textContent = url;
-  downloadBtn.onclick = () => downloadImage(url);
 }
 
-// Download handler
-function downloadImage(url) {
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "dog.jpg";
-  a.click();
-}
-
-// Close overlay
-closeBtn.onclick = () => {
+function closeOverlay() {
   imageOverlay.classList.add("hidden");
-};
+}
 
-searchInput.addEventListener("input", () => {
-  const query = searchInput.value.toLowerCase();
-  const buttons = breedTags.querySelectorAll("button");
-  buttons.forEach(btn => {
-    btn.style.display = btn.textContent.toLowerCase().includes(query)
-      ? "inline-block"
-      : "none";
-  });
+search.addEventListener("input", () => {
+  const term = search.value.toLowerCase();
+  const filtered = allBreeds.filter((b) => b.includes(term));
+  showBreedTags(filtered);
 });
 
-// Initialize
-loadBreeds();
-loadRandomImages();
+closeBtn.addEventListener("click", closeOverlay);
+imageOverlay.addEventListener("click", (e) => {
+  if (e.target === imageOverlay) closeOverlay();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeOverlay();
+});
+
+// Init
+fetchBreeds();
+fetchRandomImages();
