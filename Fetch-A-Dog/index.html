@@ -9,21 +9,27 @@
 <body>
   <header>
     <h1>Dog Gallery</h1>
-    <input type="text" id="searchInput" placeholder="Search breed...">
+    <input type="text" id="search" placeholder="Search breed...">
   </header>
 
-  <div id="breedTags" class="scrolling-tags"></div>
-  <div id="gallery"></div>
+  <div id="breedList" class="breed-tags"></div>
 
-  <!-- Overlay -->
+  <main id="gallery"></main>
+
+  <!-- Image Overlay -->
   <div id="imageOverlay" class="hidden">
-    <div id="overlayContent">
+    <div class="overlay-content">
       <span id="closeBtn">✖</span>
-      <img id="overlayImage" src="" alt="Dog image"/>
-      <p id="imageURL"></p>
-      <button id="downloadBtn">⬇️ Download</button>
+      <img id="overlayImg" src="" alt="Dog image">
+      <a id="downloadBtn" href="#" download>
+        ⬇️ Download
+      </a>
     </div>
   </div>
+
+  <footer>
+    <p>Dog images via Dog CEO API</p>
+  </footer>
 
   <script src="main.js"></script>
 </body>
