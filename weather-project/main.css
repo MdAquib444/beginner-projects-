@@ -4,30 +4,47 @@
   box-sizing: border-box;
 }
 
-body {
-  height: 100vh;
+body, html {
+  height: 100%;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to top right, #74ebd5, #9face6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.container {
-  width: 90%;
-  max-width: 400px;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
-.container h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 0;
+}
+
+.container {
+  z-index: 1;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  max-width: 90%;
+  width: 350px;
+}
+
+.container h1 {
+  font-size: 26px;
+  margin-bottom: 12px;
 }
 
 .container p {
   font-size: 18px;
-  margin: 6px 0;
+  margin: 8px 0;
 }
