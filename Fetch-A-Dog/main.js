@@ -1,95 +1,113 @@
-const gallery = document.getElementById('gallery');
-const breedTags = document.getElementById('breedTags');
-const search = document.getElementById('search');
-const overlay = document.getElementById('imageOverlay');
-const overlayImg = document.getElementById('overlayImg');
-const downloadBtn = document.getElementById('downloadBtn');
-const closeBtn = document.getElementById('closeBtn');
+const breedTags = document.getElementById("breed-tags");
+const imageGrid = document.getElementById("image-grid");
+const searchInput = document.getElementById("search");
+const overlay = document.getElementById("overlay");
+const overlayImg = document.getElementById("overlay-img");
+const overlayInfo = document.getElementById("overlay-info");
+const downloadBtn = document.getElementById("download-btn");
+const closeBtn = document.getElementById("close-btn");
 
-let breedList = [];
-let currentBreed = '';
-let loading = false;
+let allBreeds = [];
+let isLoading = false;
+let currentBreed = "";
 
-// Fetch breed list on load
-fetch('https://dog.ceo/api/breeds/list/all')
+fetch("https://dog.ceo/api/breeds/list/all")
   .then(res => res.json())
   .then(data => {
-    breedList = Object.keys(data.message);
-    renderTags(breedList);
-    loadRandomImages();
+    allBreeds = Object.keys(data.message);
+    renderBreeds(allBreeds);
+    loadImages();
   });
 
-// Render breed tags
-function renderTags(breeds) {
-  breedTags.innerHTML = '';
+function renderBreeds(breeds) {
+  breedTags.innerHTML = "";
   breeds.forEach(breed => {
-    const btn = document.createElement('button');
-    btn.innerText = breed;
+    const btn = document.createElement("button");
+    btn.textContent = breed;
     btn.onclick = () => {
       currentBreed = breed;
-      gallery.innerHTML = '';
-      loadBreedImages(breed);
+      imageGrid.innerHTML = "";
+      loadImages();
     };
     breedTags.appendChild(btn);
   });
 }
 
-// Load random dog images
-function loadRandomImages() {
-  loading = true;
-  fetch('https://dog.ceo/api/breeds/image/random/20')
+function loadImages() {
+  if (isLoading) return;
+  isLoading = true;
+
+  for (let i = 0; i < 10; i++) createSkeleton();
+
+  const url = currentBreed
+    ? `https://dog.ceo/api/breed/${currentBreed}/images/random/10`
+    : `https://dog.ceo/api/breeds/image/random/10`;
+
+  fetch(url)
     .then(res => res.json())
     .then(data => {
-      data.message.forEach(showImage);
-      loading = false;
+      data.message.forEach(url => renderImage(url));
+      isLoading = false;
     });
 }
 
-// Load breed-specific images
-function loadBreedImages(breed) {
-  loading = true;
-  fetch(`https://dog.ceo/api/breed/${breed}/images`)
-    .then(res => res.json())
-    .then(data => {
-      data.message.slice(0, 20).forEach(showImage);
-      loading = false;
-    });
-}
+function renderImage(url) {
+  const card = document.createElement("div");
+  card.className = "dog-card";
 
-// Show image on UI
-function showImage(url) {
-  const img = document.createElement('img');
+  const skeleton = document.createElement("div");
+  skeleton.className = "skeleton";
+  card.appendChild(skeleton);
+
+  const img = document.createElement("img");
+  img.className = "dog-img";
   img.src = url;
+  img.onload = () => {
+    skeleton.remove();
+    img.style.display = "block";
+  };
   img.onclick = () => showOverlay(url);
-  gallery.appendChild(img);
+
+  card.appendChild(img);
+  imageGrid.appendChild(card);
 }
 
-// Show image overlay
+function createSkeleton() {
+  const skeleton = document.createElement("div");
+  skeleton.className = "dog-card skeleton";
+  imageGrid.appendChild(skeleton);
+}
+
 function showOverlay(url) {
+  overlay.style.display = "flex";
   overlayImg.src = url;
-  downloadBtn.href = url;
-  overlay.classList.remove('hidden');
+  overlayInfo.textContent = url;
+  downloadBtn.onclick = () => downloadImage(url);
 }
 
-// Close overlay
+function downloadImage(url) {
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "dog.jpg";
+  link.click();
+}
+
 closeBtn.onclick = () => {
-  overlay.classList.add('hidden');
+  overlay.style.display = "none";
 };
 
-// Filter breeds on search
-search.addEventListener('input', () => {
-  const value = search.value.toLowerCase();
-  const filtered = breedList.filter(b => b.includes(value));
-  renderTags(filtered);
-});
+searchInput.oninput = () => {
+  const q = searchInput.value.toLowerCase();
+  const filtered = allBreeds.filter(b => b.includes(q));
+  renderBreeds(filtered);
+};
 
 // Infinite scroll
-window.addEventListener('scroll', () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
-    if (currentBreed) {
-      loadBreedImages(currentBreed);
-    } else {
-      loadRandomImages();
-    }
+window.onscroll = () => {
+  if (
+    window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 &&
+    !isLoading
+  ) {
+    loadImages();
   }
-});
+};
