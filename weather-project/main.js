@@ -12,7 +12,7 @@ function fetchWeather(lat, lon) {
     .then(data => {
       const weather = data.current_weather;
       document.getElementById('temperature').textContent = `Temperature: ${weather.temperature} °C`;
-      document.getElementById('description').textContent = `Condition: ${weather.weathercode}`;
+      document.getElementById('description').textContent = `Condition Code: ${weather.weathercode}`;
       document.getElementById('wind').textContent = `Wind: ${weather.windspeed} km/h`;
     })
     .catch(() => {
