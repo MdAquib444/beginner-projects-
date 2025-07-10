@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #fff;
+  overflow-x: hidden;
+  padding: 20px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+  text-align: center;
+}
+
+h2 {
+  font-size: 26px;
+  background: linear-gradient(45deg, #ff8a00, #e52e71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+}
+
+input[type="number"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 200px;
+  border-radius: 8px;
+  border: none;
+  text-align: center;
+  outline: none;
+  font-size: 16px;
+  background: #222;
+  color: white;
+}
+
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  background: linear-gradient(45deg, #00c9ff, #92fe9d);
+  color: #000;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.btn-group {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#output {
+  margin-top: 12px;
+  font-size: 18px;
+  color: #ddd;
+  font-weight: 500;
+}
+
+#treeWrapper {
+  margin-top: 30px;
+  overflow-x: auto;
+}
+
+#treeZoom {
+  transform-origin: top center;
+  display: inline-block;
+}
+
+#treeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-bottom: 100px;
+}
+
+.tree-level {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.node {
+  background: radial-gradient(circle at top left, #2196F3, #0d47a1);
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease-in;
+}
+
+.node:hover {
+  transform: scale(1.1);
+}
+
+.highlight {
+  background: radial-gradient(circle at bottom right, #ff9800, #ff5722);
+  color: #fff;
+}
+
+svg#lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+}
