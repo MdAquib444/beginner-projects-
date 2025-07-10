@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binary Tree Visualizer</title>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h2>Binary Tree Sample</h2>
+    <input type="number" id="nodeValue" placeholder="Enter node value">
+    <div class="btn-group">
+      <button onclick="insertNode()">Insert</button>
+      <button onclick="deleteNode()">Delete</button>
+      <button onclick="searchNode()">Search</button>
+      <button onclick="getHeight()">Height</button>
+    </div>
+    <div class="btn-group">
+      <button onclick="traverse('inorder')">Inorder</button>
+      <button onclick="traverse('preorder')">Preorder</button>
+      <button onclick="traverse('postorder')">Postorder</button>
+      <button onclick="traverse('level')">Level Order</button>
+    </div>
+    <p id="output"></p>
+    
+    <div id="treeWrapper">
+      <div id="treeZoom">
+        <div id="treeContainer"></div>
+        <svg id="lines"></svg>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
